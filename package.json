@@ -1,0 +1,66 @@
+{
+  "name": "dora",
+  "version": "0.1.0-beta1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dora-js/dora"
+  },
+  "homepage": "https://github.com/dora-js/dora",
+  "author": "chencheng <sorrycc@gmail.com>",
+  "license": "MIT",
+  "main": "./lib",
+  "bin": {
+    "dora": "./bin/dora"
+  },
+  "scripts": {
+    "build": "rm -rf lib && babel src --out-dir lib --ignore __tests__",
+    "prepublish": "npm run build",
+    "test": "jest",
+    "lint": "eslint --ext .js src"
+  },
+  "dependencies": {
+    "commander": "~2.8.1",
+    "internal-ip": "~1.1.0",
+    "is-plain-object": "~2.0.1",
+    "koa": "~1.1.2",
+    "koa-serve-index": "~1.1.1",
+    "koa-static-with-post": "~1.5.2",
+    "koa-webpack-dev-middleware": "~1.0.1",
+    "loader-utils": "~0.2.11",
+    "object-assign": "~4.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "~6.2.0",
+    "babel-core": "~6.1.21",
+    "babel-jest": "~6.0.1",
+    "babel-plugin-add-module-exports": "~0.1.1",
+    "babel-preset-es2015": "~6.1.18",
+    "babel-preset-stage-0": "~6.1.18",
+    "eslint": "~1.9.0",
+    "eslint-config-airbnb": "~1.0.0",
+    "jest-cli": "~0.7.1",
+    "jest.automockoff": "~0.1.0",
+    "pre-commit": "~1.1.2"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "testPathIgnorePatterns": [
+      "__tests__/fixtures",
+      "__tests__/expect"
+    ],
+    "testPathDirs": [
+      "<rootDir>/src"
+    ],
+    "unmockedModulePathPatterns": [],
+    "verbose": true
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0"
+    ],
+    "plugins": [
+      "add-module-exports"
+    ]
+  }
+}

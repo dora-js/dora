@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+  .version(require('../package').version, '-v, --version')
+  .option('-p, --port <port>', 'port')
+  .option('--plugins <plugins>', 'plugins')
+  .parse(process.argv);
+
+require('../lib')({
+  port: program.port,
+  plugins: program.plugins ? program.plugins.split(',') : [],
+});
