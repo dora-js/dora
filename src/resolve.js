@@ -1,5 +1,15 @@
 import resolve from 'resolve';
 
+function tryResolve(id, dirname) {
+  let result;
+  try {
+    result = resolve.sync(id, {
+      basedir: dirname,
+    });
+  } catch(e) {}
+  return result;
+}
+
 export default function(id, resolveDir) {
   if (!Array.isArray(resolveDir)) {
     resolveDir = [resolveDir];
@@ -7,11 +17,7 @@ export default function(id, resolveDir) {
 
   let result;
   resolveDir.some(dirname => {
-    try {
-      result = resolve.sync(id, {
-        basedir: dirname,
-      });
-    } catch(e) {}
+    result = tryResolve(id, dirname) || tryResolve(`dora-plugin-${id}`, dirname);
     return result;
   });
   return result;
