@@ -2,12 +2,21 @@ import { parseQuery } from 'loader-utils';
 import { join } from 'path';
 import assign from 'object-assign';
 import isPlainObject from 'is-plain-object';
+import resolve from './resolve';
 
-export function resolvePlugins(pluginNames, base) {
-  return pluginNames.map(pluginName => resolvePlugin(pluginName, base));
+function isRelative(filepath) {
+  return filepath.charAt(0) === '.';
 }
 
-export function resolvePlugin(_pluginName, base) {
+function isAbsolute(filepath) {
+  return filepath.charAt(0) === '/';
+}
+
+export function resolvePlugins(pluginNames, resolveDir, cwd) {
+  return pluginNames.map(pluginName => resolvePlugin(pluginName, resolveDir, cwd));
+}
+
+export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
   let plugin;
   let query, originQuery, name;
 
@@ -18,13 +27,21 @@ export function resolvePlugin(_pluginName, base) {
     name = pluginName;
 
     if (isRelative(pluginName)) {
-      plugin = require(join(base, pluginName));
-    } else {
+      plugin = require(join(cwd, pluginName));
+    } else if (isAbsolute(pluginName)) {
       plugin = require(pluginName);
+    } else {
+      // is Module
+      const pluginPath = resolve(pluginName, resolveDir);
+      if (!pluginPath) {
+        throw new Error(`[Error] ${pluginName} not found in ${resolveDir}`);
+      }
+      plugin = require(pluginPath);
     }
   } else if (isPlainObject(_pluginName)) {
     plugin = _pluginName;
   }
+  // support Function ?
 
   return assign({
     name,
@@ -32,10 +49,6 @@ export function resolvePlugin(_pluginName, base) {
     query,
     localIP: require('internal-ip')(),
   }, plugin);
-}
-
-export function isRelative(filepath) {
-  return filepath.charAt(0) === '.';
 }
 
 export function applyPlugins(plugins, name, args, applyArgs, app) {

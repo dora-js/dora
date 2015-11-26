@@ -1,6 +1,6 @@
 {
   "name": "dora",
-  "version": "0.1.0-beta1",
+  "version": "0.1.0-beta4",
   "repository": {
     "type": "git",
     "url": "https://github.com/dora-js/dora"
@@ -25,9 +25,9 @@
     "koa": "~1.1.2",
     "koa-serve-index": "~1.1.1",
     "koa-static-with-post": "~1.5.2",
-    "koa-webpack-dev-middleware": "~1.0.1",
     "loader-utils": "~0.2.11",
-    "object-assign": "~4.0.1"
+    "object-assign": "~4.0.1",
+    "resolve": "~1.1.6"
   },
   "devDependencies": {
     "babel-cli": "~6.2.0",
@@ -51,6 +51,12 @@
     "testPathDirs": [
       "<rootDir>/src"
     ],
+    "collectCoverageOnlyFrom": {
+      "src/plugin.js": true,
+      "src/resolve.js": true,
+      "src/index.js": true
+    },
+    "collectCoverage": true,
     "unmockedModulePathPatterns": [],
     "verbose": true
   },
@@ -62,5 +68,11 @@
     "plugins": [
       "add-module-exports"
     ]
-  }
+  },
+  "files": [
+    "bin",
+    "lib",
+    "package.json",
+    "README.md"
+  ]
 }

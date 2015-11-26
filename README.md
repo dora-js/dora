@@ -13,13 +13,18 @@ dora({
 ```
 
 
-## Plugin Argument Property
+## Plugin properties and methods
+
+### Properties
 
 - `port` - String
 - `cwd` - String
 - `localIP` - String
-- `query` - Object
 - `originQuery` - String
+- `query` - Object
+
+### Methods
+
 - `log` - Function
 - `applyPlugins`- Function
 

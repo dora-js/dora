@@ -3,9 +3,11 @@ import koa from 'koa';
 import { resolvePlugins, applyPlugins, applyMiddlewares } from './plugin';
 import assign from 'object-assign';
 
+const cwd = process.cwd();
 const defaultArgs = {
   port: '8000',
-  cwd: process.cwd(),
+  cwd: cwd,
+  resolveDir: [cwd],
 };
 
 export default function createServer(_args) {
@@ -19,7 +21,7 @@ export default function createServer(_args) {
     cwd,
     applyPlugins:_applyPlugins,
   };
-  const plugins = resolvePlugins(pluginNames);
+  const plugins = resolvePlugins(pluginNames, args.resolveDir, args.cwd);
   const app = koa();
 
   _applyPlugins('middleware.before');
