@@ -9,6 +9,6 @@ program
   .parse(process.argv);
 
 require('../lib')({
-  port: program.port,
+  port: program.port || '8000',
   plugins: program.plugins ? program.plugins.split(',') : [],
 });
