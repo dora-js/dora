@@ -1,6 +1,5 @@
 [![NPM version](https://img.shields.io/npm/v/dora.svg?style=flat)](https://npmjs.org/package/dora)
 [![Build Status](https://img.shields.io/travis/dora-js/dora.svg?style=flat)](https://travis-ci.org/dora-js/dora)
-[![Appveyor Status](https://img.shields.io/appveyor/ci/dora-js/dora.svg?style=flat)](https://ci.appveyor.com/project/sorrycc/dora)
 [![Coverage Status](https://img.shields.io/coveralls/dora-js/dora.svg?style=flat)](https://coveralls.io/r/dora-js/dora)
 [![NPM downloads](http://img.shields.io/npm/dm/dora.svg?style=flat)](https://npmjs.org/package/dora)
 
