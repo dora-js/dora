@@ -1,6 +1,32 @@
+[![NPM version](https://img.shields.io/npm/v/dora.svg?style=flat)](https://npmjs.org/package/dora)
+[![Build Status](https://img.shields.io/travis/dora-js/dora.svg?style=flat)](https://travis-ci.org/dora-js/dora)
+[![Appveyor Status](https://img.shields.io/appveyor/ci/dora-js/dora.svg?style=flat)](https://ci.appveyor.com/project/sorrycc/dora)
+[![Coverage Status](https://img.shields.io/coveralls/dora-js/dora.svg?style=flat)](https://coveralls.io/r/dora-js/dora)
+[![NPM downloads](http://img.shields.io/npm/dm/dora.svg?style=flat)](https://npmjs.org/package/dora)
+
 # Dora
 
+![](https://avatars0.githubusercontent.com/u/15991930?v=3&s=200)
+
+A fully pluggable server for development.
+
+---
+
+## Install
+
+```bash
+$ npm i dora -g 
+```
+
 ## Usage
+
+via cli
+
+```bash
+$ dora --plugins proxy,atool-build,hmr
+```
+
+via api
 
 ```javascript
 import dora from 'dora';
@@ -12,41 +38,7 @@ dora({
 });
 ```
 
+## License
 
-## Plugin properties and methods
-
-### Properties
-
-- `port` - String
-- `cwd` - String
-- `log` - Object
-- `localIP` - String
-- `originQuery` - String
-- `query` - Object
-
-### Methods
-
-- `log.(debug,info,warn,error)` - Function
-- `applyPlugins`- Function
-
-## Plugin Example
-
-```javascript
-export default {
-  'middleware.before': () => {},
-  'middleware': (args, pluginArgs) => {
-    return (next) => {
-      next();
-    };
-  },
-}
-```
-
-Methods:
-
-- `middleware.before`
-- `middleware`
-- `middleware.after`
-- `server.before`
-- `server.after`
+MIT
 
