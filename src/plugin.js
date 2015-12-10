@@ -3,6 +3,7 @@ import { join } from 'path';
 import assign from 'object-assign';
 import isPlainObject from 'is-plain-object';
 import resolve from './resolve';
+import spmLog from 'spm-log';
 
 function isRelative(filepath) {
   return filepath.charAt(0) === '.';
@@ -47,7 +48,6 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
     name,
     originQuery,
     query,
-    localIP: require('internal-ip')(),
   }, plugin);
 }
 
@@ -55,9 +55,20 @@ export function applyPlugins(plugins, name, args, applyArgs, app) {
   return plugins.reduce((memo, plugin) => {
     const func = plugin[name];
     if (!func) return memo;
+
+    const log = ['debug', 'info', 'warn', 'error'].reduce((memo, key) => {
+      memo[key] = (msg) => {
+        spmLog[key](plugin.name, msg);
+      };
+      return memo;
+    }, {});
+    const localIP = require('internal-ip')();
+
     const ret = func.call(this, assign({}, args, {
       query: plugin.query,
-      log: (msg) => console.warn(msg),
+      originQuery: plugin.originQuery,
+      log,
+      localIP,
     }), memo);
     if (name === 'middleware') {
       app.use(ret);

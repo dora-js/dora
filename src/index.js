@@ -2,6 +2,7 @@ import http from 'http';
 import koa from 'koa';
 import { resolvePlugins, applyPlugins, applyMiddlewares } from './plugin';
 import assign from 'object-assign';
+import log from 'spm-log';
 
 const cwd = process.cwd();
 const defaultArgs = {
@@ -12,6 +13,8 @@ const defaultArgs = {
 
 export default function createServer(_args) {
   const args = assign({}, defaultArgs, _args);
+  log.config(args);
+
   const { plugins: pluginNames, port, cwd } = args;
   function _applyPlugins(name, applyArgs) {
     return applyPlugins(plugins, name, pluginArgs, applyArgs);
@@ -22,6 +25,7 @@ export default function createServer(_args) {
     applyPlugins:_applyPlugins,
   };
   const plugins = resolvePlugins(pluginNames, args.resolveDir, args.cwd);
+  log.debug('dora', `[plugins] ${JSON.stringify(plugins)}`);
   const app = koa();
 
   _applyPlugins('middleware.before');
@@ -36,7 +40,7 @@ export default function createServer(_args) {
   _applyPlugins('server.before');
   const server = http.createServer(app.callback());
   server.listen(port, () => {
-    console.log('listened on %s', port);
+    log.info('dora', `listened on ${port}`);
     _applyPlugins('server.after');
   });
 }

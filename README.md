@@ -19,15 +19,15 @@ dora({
 
 - `port` - String
 - `cwd` - String
+- `log` - Object
 - `localIP` - String
 - `originQuery` - String
 - `query` - Object
 
 ### Methods
 
-- `log` - Function
+- `log.(debug,info,warn,error)` - Function
 - `applyPlugins`- Function
-
 
 ## Plugin Example
 
