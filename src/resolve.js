@@ -17,7 +17,7 @@ export default function(id, resolveDir) {
 
   let result;
   resolveDir.some(dirname => {
-    result = tryResolve(id, dirname) || tryResolve(`dora-plugin-${id}`, dirname);
+    result = tryResolve(`dora-plugin-${id}`, dirname) || tryResolve(id, dirname);
     return result;
   });
   return result;
