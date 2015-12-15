@@ -40,7 +40,7 @@
     "babel-preset-stage-0": "~6.3.13",
     "coveralls": "~2.11.4",
     "eslint": "~1.10.3",
-    "eslint-config-airbnb": "~2.0.0",
+    "eslint-config-airbnb": "~2.1.0",
     "jest-cli": "~0.8.1",
     "jest.automockoff": "~0.1.0",
     "pre-commit": "~1.1.2"
