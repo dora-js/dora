@@ -4,11 +4,11 @@ import { resolvePlugins, applyPlugins, applyMiddlewares } from './plugin';
 import assign from 'object-assign';
 import log from 'spm-log';
 
-const cwd = process.cwd();
+const defaultCwd = process.cwd();
 const defaultArgs = {
   port: '8000',
-  cwd: cwd,
-  resolveDir: [cwd],
+  cwd: defaultCwd,
+  resolveDir: [defaultCwd],
 };
 
 export default function createServer(_args) {
@@ -16,15 +16,15 @@ export default function createServer(_args) {
   log.config(args);
 
   const { plugins: pluginNames, port, cwd } = args;
-  function _applyPlugins(name, applyArgs) {
-    return applyPlugins(plugins, name, pluginArgs, applyArgs);
-  }
   const pluginArgs = {
     port,
     cwd,
-    applyPlugins:_applyPlugins,
   };
   const plugins = resolvePlugins(pluginNames, args.resolveDir, args.cwd);
+  function _applyPlugins(name, applyArgs) {
+    return applyPlugins(plugins, name, pluginArgs, applyArgs);
+  }
+  pluginArgs.applyPlugins = _applyPlugins;
   log.debug('dora', `[plugins] ${JSON.stringify(plugins)}`);
   const app = koa();
 
@@ -41,7 +41,7 @@ export default function createServer(_args) {
   const server = http.createServer(app.callback());
   server.listen(port, () => {
     // Fix log, #8
-    var stream = process.stderr;
+    const stream = process.stderr;
     if (stream.isTTY) {
       stream.cursorTo(0);
       stream.clearLine(1);

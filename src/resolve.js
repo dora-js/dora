@@ -6,11 +6,12 @@ function tryResolve(id, dirname) {
     result = resolve.sync(id, {
       basedir: dirname,
     });
-  } catch(e) {}
+  } catch (e) {} // eslint-disable-line no-empty
   return result;
 }
 
-export default function(id, resolveDir) {
+export default function(id, _resolveDir) {
+  let resolveDir = _resolveDir;
   if (!Array.isArray(resolveDir)) {
     resolveDir = [resolveDir];
   }

@@ -13,13 +13,11 @@ function isAbsolute(filepath) {
   return filepath.charAt(0) === '/';
 }
 
-export function resolvePlugins(pluginNames, resolveDir, cwd) {
-  return pluginNames.map(pluginName => resolvePlugin(pluginName, resolveDir, cwd));
-}
-
 export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
   let plugin;
-  let query, originQuery, name;
+  let query;
+  let originQuery;
+  let name;
 
   if (typeof _pluginName === 'string') {
     const [pluginName, _query] = _pluginName.split('?');
@@ -51,16 +49,20 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
   }, plugin);
 }
 
+export function resolvePlugins(pluginNames, resolveDir, cwd) {
+  return pluginNames.map(pluginName => resolvePlugin(pluginName, resolveDir, cwd));
+}
+
 export function applyPlugins(plugins, name, args, applyArgs, app) {
   return plugins.reduce((memo, plugin) => {
     const func = plugin[name];
     if (!func) return memo;
 
-    const log = ['debug', 'info', 'warn', 'error'].reduce((memo, key) => {
-      memo[key] = (msg) => {
+    const log = ['debug', 'info', 'warn', 'error'].reduce((_memo, key) => {
+      _memo[key] = (msg) => {
         spmLog[key](plugin.name, msg);
       };
-      return memo;
+      return _memo;
     }, {});
     const localIP = require('internal-ip')();
 
