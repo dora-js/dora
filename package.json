@@ -14,7 +14,6 @@
   },
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib --ignore __tests__",
-    "prepublish": "npm run build",
     "test": "jest",
     "lint": "eslint --ext .js src",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
