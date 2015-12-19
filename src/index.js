@@ -40,6 +40,13 @@ export default function createServer(_args) {
   _applyPlugins('server.before');
   const server = http.createServer(app.callback());
   server.listen(port, () => {
+    // Fix log, #8
+    var stream = process.stderr;
+    if (stream.isTTY) {
+      stream.cursorTo(0);
+      stream.clearLine(1);
+    }
+
     log.info('dora', `listened on ${port}`);
     _applyPlugins('server.after');
   });
