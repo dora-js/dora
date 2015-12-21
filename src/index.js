@@ -37,8 +37,10 @@ export default function createServer(_args) {
   }));
   _applyPlugins('middleware.after');
 
-  _applyPlugins('server.before');
   const server = http.createServer(app.callback());
+  pluginArgs.server = server; // pass server to plugin
+  _applyPlugins('server.before');
+
   server.listen(port, () => {
     // Fix log, #8
     const stream = process.stderr;
@@ -49,5 +51,17 @@ export default function createServer(_args) {
 
     log.info('dora', `listened on ${port}`);
     _applyPlugins('server.after');
+  });
+
+  process.on('exit', () => {
+    _applyPlugins('process.exit');
+  });
+
+  process.on('SIGINT', () => {
+    process.exit(0);
+  });
+
+  process.on('uncaughtException', () => {
+    process.exit(-1);
   });
 }
