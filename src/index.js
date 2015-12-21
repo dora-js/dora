@@ -11,8 +11,6 @@ const defaultArgs = {
   resolveDir: [defaultCwd],
 };
 
-let notDestroy = true;
-
 export default function createServer(_args) {
   const args = assign({}, defaultArgs, _args);
   log.config(args);
@@ -55,19 +53,15 @@ export default function createServer(_args) {
     _applyPlugins('server.after');
   });
 
-
-  // exit 事件和 SIGINT 事件是否一定只会发生一次呢? 如果不是, 需要防止多次触发 process.exit
   process.on('exit', () => {
-    if (notDestroy) {
-      _applyPlugins('process.exit');
-    }
-    notDestroy = false;
+    _applyPlugins('process.exit');
   });
 
   process.on('SIGINT', () => {
-    if (notDestroy) {
-      _applyPlugins('process.exit');
-    }
-    notDestroy = false;
+    process.exit(0);
+  });
+
+  process.on('uncaughtException', () => {
+    process.exit(-1);
   });
 }
