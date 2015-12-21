@@ -42,4 +42,5 @@ Methods:
 - `middleware.after`
 - `server.before`
 - `server.after`
+- `process.exit`
 
