@@ -1,5 +1,11 @@
 {
   "extends": "eslint-config-airbnb/base",
+  "ecmaFeatures": {
+    "generators": true
+  },
+  "env": {
+    "es6": true
+  },
   "rules": {
     "no-console": [0],
     "space-before-function-paren": [2, "never"]

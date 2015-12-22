@@ -5,6 +5,14 @@ import isPlainObject from 'is-plain-object';
 import resolve from './resolve';
 import spmLog from 'spm-log';
 
+function isFunction(obj) {
+  return typeof obj === 'function';
+}
+
+function isGeneratorFunction(obj) {
+  return isFunction(obj) && obj.constructor.name === 'GeneratorFunction';
+}
+
 function isRelative(filepath) {
   return filepath.charAt(0) === '.';
 }
@@ -53,25 +61,47 @@ export function resolvePlugins(pluginNames, resolveDir, cwd) {
   return pluginNames.map(pluginName => resolvePlugin(pluginName, resolveDir, cwd));
 }
 
-export function applyPlugins(plugins, name, args, applyArgs, app) {
+function getPluginArgs(plugin, args) {
+  const log = ['debug', 'info', 'warn', 'error'].reduce((_memo, key) => {
+    _memo[key] = (msg) => {
+      spmLog[key](plugin.name, msg);
+    };
+    return _memo;
+  }, {});
+  const localIP = require('internal-ip')();
+  return assign({}, args, {
+    query: plugin.query,
+    originQuery: plugin.originQuery,
+    log,
+    localIP,
+  });
+}
+
+export function* applyPlugins(plugins, name, args, applyArgs, app) {
+  let memo = applyArgs;
+  for (let i = 0; i < plugins.length; i++) {
+    const func = plugins[i][name];
+    if (!func || !isFunction(func)) {
+      continue;
+    }
+    const pluginArgs = getPluginArgs(plugins[i], args);
+    const ret = isGeneratorFunction(func) ? yield func.call(this, pluginArgs, memo) : func.call(this, pluginArgs, memo);
+    if (name === 'middleware') {
+      app.use(ret);
+    }
+    memo = ret;
+  }
+  return memo;
+}
+
+export function applyPluginsSync(plugins, name, args, applyArgs, app) {
   return plugins.reduce((memo, plugin) => {
-    const func = plugin[name];
-    if (!func) return memo;
-
-    const log = ['debug', 'info', 'warn', 'error'].reduce((_memo, key) => {
-      _memo[key] = (msg) => {
-        spmLog[key](plugin.name, msg);
-      };
-      return _memo;
-    }, {});
-    const localIP = require('internal-ip')();
-
-    const ret = func.call(this, assign({}, args, {
-      query: plugin.query,
-      originQuery: plugin.originQuery,
-      log,
-      localIP,
-    }), memo);
+    const func = plugins[name];
+    if (!func || !isFunction(func)) {
+      return memo;
+    }
+    const pluginArgs = getPluginArgs(plugin, args);
+    const ret = func.call(this, pluginArgs, memo);
     if (name === 'middleware') {
       app.use(ret);
     }
@@ -79,6 +109,6 @@ export function applyPlugins(plugins, name, args, applyArgs, app) {
   }, applyArgs);
 }
 
-export function applyMiddlewares(plugins, args, app) {
-  applyPlugins(plugins, 'middleware', args, null, app);
+export function* applyMiddlewares(plugins, args, app) {
+  yield applyPlugins(plugins, 'middleware', args, null, app);
 }
