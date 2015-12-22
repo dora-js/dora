@@ -35,6 +35,18 @@ export default {
 }
 ```
 
+use generator
+
+````js
+export default {
+  *'middleware.before'() {
+    yield new Promise(resolve, reject) {
+      setTimeout(resolve, 2000); // wait for 2 seconds
+    }
+  }
+}
+````
+
 Methods:
 
 - `middleware.before`
