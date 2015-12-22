@@ -45,7 +45,6 @@
     "coveralls": "~2.11.4",
     "eslint": "~1.10.3",
     "eslint-config-airbnb": "~2.1.1",
-    "i": "^0.3.3",
     "jest-cli": "~0.8.1",
     "jest.automockoff": "~0.1.0",
     "pre-commit": "~1.1.2"
