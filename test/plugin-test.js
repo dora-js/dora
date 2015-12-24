@@ -1,9 +1,9 @@
-import 'jest.automockoff';
 import { join } from 'path';
 import {
   resolvePlugin,
   applyPlugins,
-} from '../plugin';
+} from '../src/plugin';
+import expect from 'expect';
 
 describe('plugin', () => {
 

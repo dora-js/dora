@@ -56,11 +56,9 @@ export default function createServer(_args) {
   process.on('exit', () => {
     _applyPlugins('process.exit');
   });
-
   process.on('SIGINT', () => {
     process.exit(0);
   });
-
   process.on('uncaughtException', () => {
     process.exit(-1);
   });
