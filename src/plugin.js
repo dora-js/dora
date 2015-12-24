@@ -21,8 +21,10 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
 
   if (typeof _pluginName === 'string') {
     const [pluginName, _query] = _pluginName.split('?');
-    originQuery = `?${_query}`;
-    query = parseQuery(originQuery);
+    if (_query) {
+      originQuery = `?${_query}`;
+      query = parseQuery(originQuery);
+    }
     name = pluginName;
 
     if (isRelative(pluginName)) {
