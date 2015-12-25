@@ -34,12 +34,19 @@ describe('plugin', () => {
       b: 1,
     });
 
-    // Error
+    // Error: plugin not found
     expect(() => resolvePlugin('foo', [cwd], cwd)).toThrow(/foo not found/);
 
     // Module with dirnames
     plugin = resolvePlugin('foo', [cwd, join(cwd, 'node_modules/c')], cwd);
     expect(plugin).toEqual({ name: 'd', originQuery: undefined, query: undefined });
+
+    // Object
+    plugin = resolvePlugin({a:1}, null, null);
+    expect(plugin).toEqual({a:1,name:undefined,originQuery:undefined,query:undefined});
+
+    // Error: unsupported pluginName Type
+    expect(() => resolvePlugin(null, null, null)).toThrow(/pluginName must be string or object/);
   });
 
   it('resolvePlugins', () => {
@@ -60,7 +67,7 @@ describe('plugin', () => {
     ]);
   });
 
-  xit('applyPlugins', () => {
+  it('applyPlugins', () => {
     const result = applyPlugins([
       { test: (args, memo) => memo + '1' },
       { test: (args, memo) => memo + '2' },

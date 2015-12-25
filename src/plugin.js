@@ -41,8 +41,9 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
     }
   } else if (isPlainObject(_pluginName)) {
     plugin = _pluginName;
+  } else {
+    throw Error('[Error] pluginName must be string or object');
   }
-  // support Function ?
 
   return assign({
     name,
@@ -74,7 +75,7 @@ export function applyPlugins(plugins, name, args, applyArgs, app) {
       log,
       localIP,
     }), memo);
-    if (name === 'middleware') {
+    if (name === 'middleware' && app) {
       app.use(ret);
     }
     return ret;
