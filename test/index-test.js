@@ -5,18 +5,37 @@ import expect from 'expect';
 
 const port = 12346;
 
-describe.only('index', () => {
+describe('index', () => {
 
   before(done => {
     dora({
-      plugins: [],
+      plugins: [
+        './plugin-a',
+      ],
       port,
       cwd: join(__dirname, 'fixtures/plugin-run'),
+    }, done);
+  });
+
+  it('plugin-a middleware', (done) => {
+    request(`http://localhost:${port}/foo`, (err, res, body) => {
+      expect(body).toEqual('foo');
+      done();
     });
   });
 
-  it('normal', () => {
-    expect(1).toEqual(1);
+  it('static', (done) => {
+    request(`http://localhost:${port}/index.js`, (err, res, body) => {
+      expect(body.trim()).toEqual('console.log(\'index\');');
+      done();
+    });
+  });
+
+  it('serve index', (done) => {
+    request(`http://localhost:${port}/`, (err, res, body) => {
+      expect(body.indexOf('<title>listing directory /</title>') > -1).toExist();
+      done();
+    });
   });
 
 });

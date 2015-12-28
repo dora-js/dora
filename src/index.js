@@ -27,7 +27,7 @@ export default function createServer(_args, callback) {
     join(__dirname, './plugins/serve-index'),
   ]);
 
-  const plugins = resolvePlugins(pluginNames, resolveDir, args);
+  const plugins = resolvePlugins(pluginNames, resolveDir, cwd);
   function _applyPlugins(name, pluginArgs, _callback) {
     return applyPlugins(plugins, name, context, pluginArgs, _callback);
   }

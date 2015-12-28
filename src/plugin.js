@@ -62,7 +62,7 @@ export function resolvePlugins(pluginNames, resolveDir, cwd) {
   return pluginNames.map(pluginName => resolvePlugin(pluginName, resolveDir, cwd));
 }
 
-export function expression(plugins, name, context = {}, pluginArgs, _callback = function noop() {}) {
+export function applyPlugins(plugins, name, context = {}, pluginArgs, _callback = function noop() {}) {
   if (!plugins || !plugins.length) return _callback();
   let ret;
 
