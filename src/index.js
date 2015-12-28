@@ -19,8 +19,7 @@ export default function createServer(_args, callback) {
 
   const { port, cwd, resolveDir } = args;
   let pluginNames = args.plugins;
-  const context = { port, cwd };
-  context.localIP = require('internal-ip')();
+  const context = { port, cwd, localIP: require('internal-ip')() };
 
   pluginNames = pluginNames.concat([
     join(__dirname, './plugins/static'),
