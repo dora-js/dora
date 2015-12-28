@@ -67,13 +67,56 @@ describe('plugin', () => {
     ]);
   });
 
-  it('applyPlugins', () => {
+  it('applyPlugins sync', () => {
     const result = applyPlugins([
-      { test: (args, memo) => memo + '1' },
-      { test: (args, memo) => memo + '2' },
+      { test: (memo) => memo + '1' },
+      { test: (memo) => memo + '2' },
       { a: 1 },
     ], 'test', {}, '0');
     expect(result).toEqual('012');
+  });
+
+  it('applyPlugins sync with callback', () => {
+    const result = applyPlugins([
+      { test(memo) { this.callback(null, memo + '1') } },
+      { test: (memo) => memo + '2' },
+    ], 'test', {}, '0');
+    expect(result).toEqual('012');
+  });
+
+  it('applyPlugins async', () => {
+    const result = applyPlugins([
+      { test(memo) { process.nextTick( () => { this.callback(null, memo + '1'); }); } },
+      { test(memo) { process.nextTick( () => { this.callback(null, memo + '2'); }); } },
+    ], 'test', {}, '0', (err, result) => {
+      expect(result).toEqual('012');
+      done();
+    });
+  });
+
+  it('applyPlugins async + sync', () => {
+    const result = applyPlugins([
+      { test(memo) { return memo + '1'; } },
+      { test(memo) { process.nextTick( () => { this.callback(null, memo + '2'); }); } },
+    ], 'test', {}, '0', (err, result) => {
+      expect(result).toEqual('012');
+      done();
+    });
+  });
+
+  it('applyPlugins generator', () => {
+    const result = applyPlugins([
+      { test(memo) { return memo + '1'; } },
+      { *test(memo) {
+          yield new Promise((resolve) => {
+            process.nextTick(() => { this.callback(null, memo + '2'); });
+          });
+        }
+      },
+    ], 'test', {}, '0', (err, result) => {
+      expect(result).toEqual('012');
+      done();
+    });
   });
 
 });
