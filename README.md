@@ -37,6 +37,10 @@ dora({
 });
 ```
 
+## Docs
+
+- [How To Write A Dora Plugin](./docs/How-To-Write-A-Dora-Plugin.md)
+
 ## License
 
 MIT
