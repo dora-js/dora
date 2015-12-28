@@ -56,7 +56,7 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
   return assign({
     name,
     originQuery,
-    query,
+    query: query || {},
   }, plugin);
 }
 

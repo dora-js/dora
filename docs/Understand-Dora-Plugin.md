@@ -44,7 +44,7 @@ async.series([
       });
     },
     // 执行所有注册到 server.after 时间点的插件。
-    next => _applyPlugins('server.before', null, next),
+    next => _applyPlugins('server.after', null, next),
   ], callback);
 ````
 

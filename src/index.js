@@ -55,6 +55,6 @@ export default function createServer(_args, callback) {
         next();
       });
     },
-    next => _applyPlugins('server.before', null, next),
+    next => _applyPlugins('server.after', null, next),
   ], callback);
 }
