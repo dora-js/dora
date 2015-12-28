@@ -28,6 +28,9 @@ $ dora --plugins ./local-plugin
 
 ## Load plugin with arguments
 $ dora --plugins atool-build?publicPath=/foo/&verbose
+
+## Load plugin with JSON arguments
+$ dora --plugins atool-build?{"publicPath":"/foo/","verbose":true}
 ```
 
 ## Docs
