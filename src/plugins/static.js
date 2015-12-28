@@ -1,6 +1,6 @@
 
 export default {
   middleware() {
-    return require('koa-static-with-post')(this.cwd);
+    return require('koa-static')(this.cwd);
   },
 };
