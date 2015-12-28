@@ -5,7 +5,7 @@
 
 # Dora
 
-![](https://avatars0.githubusercontent.com/u/15991930?v=3&s=200)
+![](https://os.alipayobjects.com/rmsportal/UnpjHRTnkJlHfXx.png)
 
 A fully pluggable server for development.
 
@@ -19,22 +19,15 @@ $ npm i dora -g
 
 ## Usage
 
-via cli
-
 ```bash
+## Load proxy, atool-build and hmr plugins
 $ dora --plugins proxy,atool-build,hmr
-```
 
-via api
+## Load local plugin
+$ dora --plugins ./local-plugin
 
-```javascript
-import dora from 'dora';
-dora({
-  plugins: [
-    'proxy',
-    'atool-build',
-  ],
-});
+## Load plugin with arguments
+$ dora --plugins atool-build?publicPath=/foo/&verbose
 ```
 
 ## Docs
@@ -45,4 +38,3 @@ dora({
 ## License
 
 MIT
-
