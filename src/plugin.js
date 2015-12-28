@@ -80,7 +80,6 @@ export function applyPlugins(plugins, name, context, pluginArgs, _callback = fun
 
     // Add more context api
     context.query = plugin.query;
-    context.originQuery = plugin.originQuery;
     context.log = log;
     context.callback = callback;
 
