@@ -40,6 +40,7 @@ dora({
 ## Docs
 
 - [How To Write A Dora Plugin](./docs/How-To-Write-A-Dora-Plugin.md)
+- [Understand Dora Plugin](./docs/Understand-Dora-Plugin.md)
 
 ## License
 
