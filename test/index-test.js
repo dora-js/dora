@@ -14,6 +14,7 @@ describe('index', () => {
       ],
       port,
       cwd: join(__dirname, 'fixtures/plugin-run'),
+      verbose: true,
     }, done);
   });
 

@@ -62,8 +62,7 @@ export function resolvePlugins(pluginNames, resolveDir, cwd) {
   return pluginNames.map(pluginName => resolvePlugin(pluginName, resolveDir, cwd));
 }
 
-export function applyPlugins(plugins, name, context = {}, pluginArgs, _callback = function noop() {}) {
-  if (!plugins || !plugins.length) return _callback();
+export function applyPlugins(plugins, name, context, pluginArgs, _callback = function noop() {}) {
   let ret;
 
   reduceAsync(plugins, pluginArgs, (memo, plugin, callback) => {
