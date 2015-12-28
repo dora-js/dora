@@ -10,11 +10,11 @@ describe('plugin', () => {
 
     // Relative
     plugin = resolvePlugin('./a', null, cwd);
-    expect(plugin).toEqual({ name: 'a', originQuery: undefined, query: undefined, a: 1 });
+    expect(plugin).toEqual({ name: 'a', originQuery: undefined, query: {}, a: 1 });
 
     // Absolute
     plugin = resolvePlugin(join(cwd, 'a'), null, cwd);
-    expect(plugin).toEqual({ name: 'a', originQuery: undefined, query: undefined, a: 1 });
+    expect(plugin).toEqual({ name: 'a', originQuery: undefined, query: {}, a: 1 });
 
     // With query
     plugin = resolvePlugin('./a?b=1&c', null, cwd);
@@ -30,7 +30,7 @@ describe('plugin', () => {
     expect(plugin).toEqual({
       name: 'b-renamed',
       originQuery: undefined,
-      query: undefined,
+      query: {},
       b: 1,
     });
 
@@ -39,11 +39,11 @@ describe('plugin', () => {
 
     // Module with dirnames
     plugin = resolvePlugin('foo', [cwd, join(cwd, 'node_modules/c')], cwd);
-    expect(plugin).toEqual({ name: 'd', originQuery: undefined, query: undefined });
+    expect(plugin).toEqual({ name: 'd', originQuery: undefined, query: {} });
 
     // Object
     plugin = resolvePlugin({a:1}, null, null);
-    expect(plugin).toEqual({a:1,name:undefined,originQuery:undefined,query:undefined});
+    expect(plugin).toEqual({a:1,name:undefined,originQuery:undefined,query:{}});
 
     // Error: unsupported pluginName Type
     expect(() => resolvePlugin(null, null, null)).toThrow(/pluginName must be string or object/);
