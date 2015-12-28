@@ -109,3 +109,10 @@ HTTP Server 实例。只在  `server.before` 和 `server.after` 方法中有效�
 ### callback(err, data)
 
 异步流控制 `this.callback` 。
+
+## 内部数据
+
+### __ready
+
+### __server_listen_log
+

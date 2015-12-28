@@ -23,6 +23,7 @@ export default function createServer(_args, callback) {
   const context = { port, cwd, localIP: require('internal-ip')() };
   context.set = (key, val) => data[key] = val;
   context.get = key => data[key];
+  context.set('__server_listen_log', true);
 
   pluginNames = pluginNames.concat([
     join(__dirname, './plugins/static'),
@@ -51,7 +52,10 @@ export default function createServer(_args, callback) {
     next => _applyPlugins('server.before', null, next),
     next => {
       server.listen(port, () => {
-        log.info('dora', `listened on ${port}`);
+        if (context.get('__server_listen_log')) {
+          log.info('dora', `listened on ${port}`);
+        }
+        context.set('__ready', true);
         next();
       });
     },
