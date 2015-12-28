@@ -1,8 +1,10 @@
 import http from 'http';
 import koa from 'koa';
-import { resolvePlugins, applyPlugins, applyMiddlewares } from './plugin';
+import { resolvePlugins, applyPlugins } from './plugin';
 import assign from 'object-assign';
 import log from 'spm-log';
+import async from 'async';
+import { join } from 'path';
 
 const defaultCwd = process.cwd();
 const defaultArgs = {
@@ -11,55 +13,46 @@ const defaultArgs = {
   resolveDir: [defaultCwd],
 };
 
-export default function createServer(_args) {
+export default function createServer(_args, callback) {
   const args = assign({}, defaultArgs, _args);
   log.config(args);
 
-  const { plugins: pluginNames, port, cwd } = args;
-  const pluginArgs = {
-    port,
-    cwd,
-  };
-  const plugins = resolvePlugins(pluginNames, args.resolveDir, args.cwd);
-  function _applyPlugins(name, applyArgs) {
-    return applyPlugins(plugins, name, pluginArgs, applyArgs);
+  const { port, cwd, resolveDir } = args;
+  let pluginNames = args.plugins;
+  const context = { port, cwd };
+  context.localIP = require('internal-ip')();
+
+  pluginNames = pluginNames.concat([
+    join(__dirname, './plugins/static'),
+    join(__dirname, './plugins/serve-index'),
+  ]);
+
+  const plugins = resolvePlugins(pluginNames, resolveDir, args);
+  function _applyPlugins(name, pluginArgs, _callback) {
+    return applyPlugins(plugins, name, context, pluginArgs, _callback);
   }
-  pluginArgs.applyPlugins = _applyPlugins;
+  context.applyPlugins = _applyPlugins;
   log.debug('dora', `[plugins] ${JSON.stringify(plugins)}`);
-  const app = koa();
 
-  _applyPlugins('middleware.before');
-  applyMiddlewares(plugins, pluginArgs, app);
-  app.use(require('koa-static-with-post')(cwd));
-  app.use(require('koa-serve-index')(cwd, {
-    hidden: true,
-    view: 'details',
-  }));
-  _applyPlugins('middleware.after');
-
-  const server = http.createServer(app.callback());
-  pluginArgs.server = server; // pass server to plugin
-  _applyPlugins('server.before');
-
-  server.listen(port, () => {
-    // Fix log, #8
-    const stream = process.stderr;
-    if (stream.isTTY) {
-      stream.cursorTo(0);
-      stream.clearLine(1);
-    }
-
-    log.info('dora', `listened on ${port}`);
-    _applyPlugins('server.after');
-  });
+  const app = context.app = koa();
+  let server;
 
   process.on('exit', () => {
     _applyPlugins('process.exit');
   });
-  process.on('SIGINT', () => {
-    process.exit(0);
-  });
-  process.on('uncaughtException', () => {
-    process.exit(-1);
-  });
+
+  async.series([
+    next => _applyPlugins('middleware.before', null, next),
+    next => _applyPlugins('middleware', null, next),
+    next => _applyPlugins('middleware.after', null, next),
+    next => { server = context.server = http.createServer(app.callback()); next(); },
+    next => _applyPlugins('server.before', null, next),
+    next => {
+      server.listen(port, () => {
+        log.info('dora', `listened on ${port}`);
+        next();
+      });
+    },
+    next => _applyPlugins('server.before', null, next),
+  ], callback);
 }

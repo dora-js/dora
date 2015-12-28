@@ -15,7 +15,7 @@
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib --ignore __tests__",
     "test": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha --no-timeouts",
-    "debug": "./node_modules/.bin/mocha --require babel-core/register --no-timeouts --watch",
+    "debug": "./node_modules/.bin/mocha --require babel-core/register --no-timeouts",
     "lint": "eslint --ext .js src",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
@@ -23,7 +23,9 @@
     "lint"
   ],
   "dependencies": {
+    "async": "^1.5.0",
     "commander": "~2.9.0",
+    "dora-util-is-async": "^0.1.0",
     "internal-ip": "~1.1.0",
     "is-plain-object": "~2.0.1",
     "koa": "~1.1.2",
@@ -46,7 +48,8 @@
     "eslint-config-airbnb": "~2.1.0",
     "expect": "^1.13.4",
     "mocha": "^2.3.4",
-    "pre-commit": "~1.1.2"
+    "pre-commit": "~1.1.2",
+    "request": "^2.67.0"
   },
   "babel": {
     "presets": [
