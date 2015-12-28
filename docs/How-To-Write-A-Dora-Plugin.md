@@ -1,8 +1,8 @@
-# How To Write A Dora Plugin
+# 如何写 Dora 插件
 
-## Example
+## 入门
 
-Code below shows a plugin with middleware which logging requests.
+下面的例子演示如何通过增加中间件来记录请求。
 
 ```javascript
 module.exports = {
@@ -12,22 +12,22 @@ module.exports = {
       console.log(this.method + ':' + this.url);
       yield next;
     }
-  }
-}
+  },
+};
 ```
 
-More Examples:
+更多例子:
 
-- [sync plugin](../test/fixtures/plugin-run/plugin-sync.js)
-- [async plugin](../test/fixtures/plugin-run/plugin-async.js)
-- [generator plugin](../test/fixtures/plugin-run/plugin-generator.js)
-- [dora-plugin-proxy](https://github.com/dora-js/dora-plugin-proxy/blob/master/src/index.js)
-- [dora-plugin-atool-build](https://github.com/dora-js/dora-plugin-atool-build/blob/master/src/index.js)
-- [dora-plugin-hmr](https://github.com/dora-js/dora-plugin-hmr/blob/master/src/index.js)
+- [同步](../test/fixtures/plugin-run/plugin-sync.js)
+- [异步 callback](../test/fixtures/plugin-run/plugin-async.js)
+- [异步 generator](../test/fixtures/plugin-run/plugin-generator.js)
+- [插件：dora-plugin-proxy](https://github.com/dora-js/dora-plugin-proxy/blob/master/src/index.js)
+- [插件：dora-plugin-atool-build](https://github.com/dora-js/dora-plugin-atool-build/blob/master/src/index.js)
+- [插件：dora-plugin-hmr](https://github.com/dora-js/dora-plugin-hmr/blob/master/src/index.js)
 
-## Async Plugin
+## 异步插件
 
-Use `this.callback` or `generator` to write async plugin.
+异步插件编写有两种方式：`this.callback` 和 `generator`。
 
 ### this.callback
 
@@ -55,9 +55,7 @@ module.exports = {
 };
 ```
 
-## Plugin methods
-
-Methods that can be extend.
+## 插件方法
 
 ### middleware.before
 ### middleware
@@ -66,40 +64,40 @@ Methods that can be extend.
 ### server.after
 ### process.exit
 
-## Plugin context
+## 插件上下文
 
-This stuff is available on `this` in a plugin.
+这里的接口都可以通过 `this` 访问到。
 
 ### port
 
-Dora server port. Default: 8000.
+Dora 服务器端口，默认 8000 。
 
 ### cwd
 
-Project cwd.
+当前路径，通常是项目根目录。
 
 ### localIP
 
-Local IP.
+本地 IP 。
 
 ### app
 
-Koa app.
+Koa app 实例。
 
 ### server
 
-HTTP Server instance. Only avaiable in `server.before` and `server.after`.
+HTTP Server 实例。只在  `server.before` 和 `server.after` 方法中有效。
 
 ### log
 
-An object with 4 methods, `debug`, `info`, `warn`, `error`.
+类型为 `Object`，包含 4 个方法：`debug`, `info`, `warn`, `error` 。
 
 ### query
 
-An object. The query of the plugin.
+类型为 `Object`，插件的查询参数。
 
-For example, command `dora --plugins proxy?port=9000&verbose`, then you can get query object `{port:9000,verbose:true}` .
+比如执行命令 `dora --plugins proxy?port=9000&verbose`，那么 proxy 插件的查询参数是 `{port:9000,verbose:true}`。
 
 ### callback
 
-Async control with `this.callback` .
+异步流控制 `this.callback` 。
