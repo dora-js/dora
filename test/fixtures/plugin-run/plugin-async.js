@@ -5,7 +5,7 @@ module.exports = {
   name: 'async',
   'middleware.before': function() {
     process.nextTick(() => {
-      a = `async-${this.query.affix}`;
+      a = `${this.get('prefix') || ''}async-${this.query.affix}`;
       this.callback();
     });
   },

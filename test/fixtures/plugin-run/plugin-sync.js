@@ -9,6 +9,7 @@ module.exports = {
     this.log.warn('a');
     this.log.debug('a');
     this.log.error('a');
+    this.set('prefix', 's-');
   },
   'middleware': function() {
     return function *(next) {

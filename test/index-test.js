@@ -29,7 +29,7 @@ describe('index', () => {
 
   it('plugin-async', (done) => {
     request(`http://localhost:${port}/async`, (err, res, body) => {
-      expect(body).toEqual('async-a');
+      expect(body).toEqual('s-async-a');
       done();
     });
   });

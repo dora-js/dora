@@ -80,6 +80,14 @@ Dora 服务器端口，默认 8000 。
 
 本地 IP 。
 
+### set(key, value)
+
+函数，用于设置数据。
+
+### get(key)
+
+函数，用于获取数据。
+
 ### app
 
 Koa app 实例。
@@ -98,6 +106,6 @@ HTTP Server 实例。只在  `server.before` 和 `server.after` 方法中有效�
 
 比如执行命令 `dora --plugins proxy?port=9000&verbose`，那么 proxy 插件的查询参数是 `{port:9000,verbose:true}`。
 
-### callback
+### callback(err, data)
 
 异步流控制 `this.callback` 。
