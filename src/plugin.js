@@ -6,6 +6,8 @@ import resolve from './resolve';
 import spmLog from 'spm-log';
 import _isAsync from 'dora-util-is-async';
 import reduceAsync from './reduceAsync';
+import isGeneratorFn from 'is-generator-fn';
+import co from 'co';
 
 function isRelative(filepath) {
   return filepath.charAt(0) === '.';
@@ -85,6 +87,10 @@ export function applyPlugins(plugins, name, context, pluginArgs, _callback = fun
     if (name === 'middleware') {
       context.app.use(func.call(context));
       callback();
+    } else if (isGeneratorFn(func)) {
+      co.wrap(func).call(context).then((val) => {
+        callback(null, val);
+      }, callback);
     } else if (isAsync(func)) {
       func.call(context, memo);
     } else {

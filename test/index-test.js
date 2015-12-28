@@ -10,7 +10,9 @@ describe('index', () => {
   before(done => {
     dora({
       plugins: [
-        './plugin-a',
+        './plugin-sync?affix=s',
+        './plugin-async?affix=a',
+        './plugin-generator?affix=g',
       ],
       port,
       cwd: join(__dirname, 'fixtures/plugin-run'),
@@ -18,9 +20,23 @@ describe('index', () => {
     }, done);
   });
 
-  it('plugin-a middleware', (done) => {
-    request(`http://localhost:${port}/foo`, (err, res, body) => {
-      expect(body).toEqual('foo');
+  it('plugin-sync', (done) => {
+    request(`http://localhost:${port}/sync`, (err, res, body) => {
+      expect(body).toEqual('sync-s');
+      done();
+    });
+  });
+
+  it('plugin-async', (done) => {
+    request(`http://localhost:${port}/async`, (err, res, body) => {
+      expect(body).toEqual('async-a');
+      done();
+    });
+  });
+
+  it('plugin-generator', (done) => {
+    request(`http://localhost:${port}/generator`, (err, res, body) => {
+      expect(body).toEqual('generator-g');
       done();
     });
   });

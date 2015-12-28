@@ -104,4 +104,19 @@ describe('plugin', () => {
     });
   });
 
+  it('applyPlugins generator', () => {
+    const result = applyPlugins([
+      { test(memo) { return memo + '1'; } },
+      { *test(memo) {
+          yield new Promise((resolve) => {
+            process.nextTick(() => { this.callback(null, memo + '2'); });
+          });
+        }
+      },
+    ], 'test', {}, '0', (err, result) => {
+      expect(result).toEqual('012');
+      done();
+    });
+  });
+
 });

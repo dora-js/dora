@@ -24,9 +24,11 @@
   ],
   "dependencies": {
     "async": "^1.5.0",
+    "co": "^4.6.0",
     "commander": "~2.9.0",
     "dora-util-is-async": "^0.1.0",
     "internal-ip": "~1.1.0",
+    "is-generator-fn": "^1.0.0",
     "is-plain-object": "~2.0.1",
     "koa": "~1.1.2",
     "koa-serve-index": "~1.1.1",
