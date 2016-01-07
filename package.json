@@ -32,7 +32,7 @@
     "is-plain-object": "~2.0.1",
     "koa": "~1.1.2",
     "koa-serve-index": "~1.1.1",
-    "koa-static": "^1.5.2",
+    "koa-static": "^2.0.0",
     "loader-utils": "~0.2.11",
     "object-assign": "~4.0.1",
     "resolve": "~1.1.6",
