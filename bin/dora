@@ -1,16 +1,36 @@
 #!/usr/bin/env node
 
-var program = require('commander');
+var cp = require('child_process');
 
-program
-  .version(require('../package').version, '-v, --version')
-  .option('-p, --port <n>', 'server port. Default: 8000')
-  .option('--plugins <name|file>', 'defines the plugins which should be used.')
-  .option('--verbose', 'run with more logging messages.')
-  .parse(process.argv);
+function start() {
+  const p = cp.fork(__dirname + '/dora', process.argv.slice(2));
+  p.on('message', function(data) {
+    if (data === 'restart') {
+      p.kill('SIGINT');
+      start();
+    }
+  });
+}
 
-require('../lib')({
-  port: program.port || '8000',
-  plugins: program.plugins ? program.plugins.split(',') : [],
-  verbose: program.verbose,
-});
+// Main
+if (!process.send) {
+  start();
+}
+
+// Child Process
+else {
+  var program = require('commander');
+
+  program
+    .version(require('../package').version, '-v, --version')
+    .option('-p, --port <n>', 'server port. Default: 8000')
+    .option('--plugins <name|file>', 'defines the plugins which should be used.')
+    .option('--verbose', 'run with more logging messages.')
+    .parse(process.argv);
+
+  require('../lib')({
+    port: program.port || '8000',
+    plugins: program.plugins ? program.plugins.split(',') : [],
+    verbose: program.verbose,
+  });
+}

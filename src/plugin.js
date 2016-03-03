@@ -77,6 +77,11 @@ export function applyPlugins(plugins, name, context, pluginArgs, _callback = fun
     context.query = plugin.query;
     context.log = log;
     context.callback = callback;
+    context.restart = () => {
+      console.log();
+      spmLog.info('dora', `try to restart...`);
+      process.send('restart');
+    };
 
     if (name === 'middleware') {
       context.app.use(func.call(context));
