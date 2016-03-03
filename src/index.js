@@ -20,7 +20,7 @@ export default function createServer(_args, callback) {
 
   const { port, cwd, resolveDir } = args;
   let pluginNames = args.plugins;
-  const context = { port, cwd, localIP: require('internal-ip')() };
+  const context = { port, cwd };
   context.set = (key, val) => data[key] = val;
   context.get = key => data[key];
   context.set('__server_listen_log', true);
