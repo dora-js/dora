@@ -27,15 +27,15 @@ module.exports = {
 
 ## 异步插件
 
-异步插件编写有两种方式：`this.callback` 和 `generator`。
+异步插件编写有两种方式：`Promise` 和 `generator`。
 
-### this.callback
+### Promise
 
 ```javascript
 module.exports = {
   'server.after': function() {
-    startLivereloadServer(function() {
-      this.callback();
+    return new Promise(function(resolve) {
+      startLivereloadServer(resolve);
     });
   }
 }
@@ -76,10 +76,6 @@ Dora 服务器端口，默认 8000 。
 
 当前路径，通常是项目根目录。
 
-### localIP
-
-本地 IP 。
-
 ### set(key, value)
 
 函数，用于设置数据。
@@ -105,10 +101,6 @@ HTTP Server 实例。只在  `server.before` 和 `server.after` 方法中有效�
 类型为 `Object`，插件的查询参数。
 
 比如执行命令 `dora --plugins proxy?port=9000&verbose`，那么 proxy 插件的查询参数是 `{port:9000,verbose:true}`。
-
-### callback(err, data)
-
-异步流控制 `this.callback` 。
 
 ## 内部数据
 
