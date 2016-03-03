@@ -4,7 +4,6 @@ import assign from 'object-assign';
 import isPlainObject from 'is-plain-object';
 import resolve from './resolve';
 import spmLog from 'spm-log';
-import _isAsync from 'dora-util-is-async';
 import reduceAsync from './reduceAsync';
 import isGeneratorFn from 'is-generator-fn';
 import co from 'co';
@@ -15,10 +14,6 @@ function isRelative(filepath) {
 
 function isAbsolute(filepath) {
   return filepath.charAt(0) === '/';
-}
-
-function isAsync(func) {
-  return _isAsync(func.toString().match(/function[^{]+\{([\s\S]*)\}$/)[1]);
 }
 
 export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
@@ -90,10 +85,15 @@ export function applyPlugins(plugins, name, context, pluginArgs, _callback = fun
       co.wrap(func).call(context).then((val) => {
         callback(null, val);
       }, callback);
-    } else if (isAsync(func)) {
-      func.call(context, memo);
     } else {
-      callback(null, func.call(context, memo));
+      const funcResult = func.call(context, memo);
+      if (funcResult && funcResult.then) {
+        funcResult.then(result => {
+          callback(null, result);
+        }).catch(callback);
+      } else {
+        callback(null, funcResult);
+      }
     }
   }, (err, result) => {
     ret = result;

@@ -1,12 +1,13 @@
-
 var a = '';
 
 module.exports = {
   name: 'async',
   'middleware.before': function() {
-    process.nextTick(() => {
-      a = `${this.get('prefix') || ''}async-${this.query.affix}`;
-      this.callback();
+    return new Promise(resolve => {
+      process.nextTick(() => {
+        a = `${this.get('prefix') || ''}async-${this.query.affix}`;
+        resolve();
+      });
     });
   },
   'middleware': function() {
