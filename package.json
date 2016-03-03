@@ -33,7 +33,6 @@
     "koa-serve-index": "~1.1.1",
     "koa-static": "^2.0.0",
     "loader-utils": "~0.2.11",
-    "object-assign": "~4.0.1",
     "resolve": "~1.1.6",
     "spm-log": "^0.1.3"
   },

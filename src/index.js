@@ -1,7 +1,6 @@
 import http from 'http';
 import koa from 'koa';
 import { resolvePlugins, applyPlugins } from './plugin';
-import assign from 'object-assign';
 import log from 'spm-log';
 import async from 'async';
 import { join } from 'path';
@@ -15,7 +14,7 @@ const defaultArgs = {
 const data = {};
 
 export default function createServer(_args, callback) {
-  const args = assign({}, defaultArgs, _args);
+  const args = {...defaultArgs, ..._args};
   log.config(args);
 
   const { port, cwd, resolveDir } = args;

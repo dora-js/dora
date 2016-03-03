@@ -1,6 +1,5 @@
 import { parseQuery } from 'loader-utils';
 import { join } from 'path';
-import assign from 'object-assign';
 import isPlainObject from 'is-plain-object';
 import resolve from './resolve';
 import spmLog from 'spm-log';
@@ -18,7 +17,7 @@ function isAbsolute(filepath) {
 
 export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
   let plugin;
-  let query;
+  let query = {};
   let originQuery;
   let name;
 
@@ -48,11 +47,12 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
     throw Error('[Error] pluginName must be string or object');
   }
 
-  return assign({
+  return {
     name,
     originQuery,
-    query: query || {},
-  }, plugin);
+    query,
+    ...plugin,
+  };
 }
 
 export function resolvePlugins(pluginNames, resolveDir, cwd) {
