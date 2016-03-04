@@ -37,7 +37,7 @@
     "spm-log": "^0.1.3"
   },
   "devDependencies": {
-    "babel-cli": "~6.6.0",
+    "babel-cli": "~6.6.5",
     "babel-core": "~6.6.0",
     "babel-istanbul": "^0.6.0",
     "babel-plugin-add-module-exports": "~0.1.2",
