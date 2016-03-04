@@ -29,7 +29,7 @@
     "commander": "~2.9.0",
     "is-generator-fn": "^1.0.0",
     "is-plain-object": "~2.0.1",
-    "koa": "~1.1.2",
+    "koa": "~1.2.0",
     "koa-serve-index": "~1.1.1",
     "koa-static": "^2.0.0",
     "loader-utils": "~0.2.11",
