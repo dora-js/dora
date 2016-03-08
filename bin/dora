@@ -19,6 +19,7 @@ if (!process.send) {
 
 // Child Process
 else {
+  require('babel-polyfill');
   var program = require('commander');
 
   program

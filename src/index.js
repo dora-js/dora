@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import http from 'http';
 import koa from 'koa';
 import { resolvePlugins, applyPlugins } from './plugin';
