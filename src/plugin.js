@@ -72,8 +72,8 @@ export function applyPlugins(plugins, name, context, pluginArgs, _callback = fun
       };
       return _memo;
     }, {});
-
     // Add more context api
+    context.plugins = plugins;
     context.query = plugin.query;
     context.log = log;
     context.callback = callback;
