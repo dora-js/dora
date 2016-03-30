@@ -1,6 +1,6 @@
 {
   "name": "dora",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/dora-js/dora"
@@ -23,6 +23,7 @@
     "lint"
   ],
   "dependencies": {
+    "atool-monitor": "0.x",
     "async": "^1.5.0",
     "co": "^4.6.0",
     "commander": "~2.9.0",

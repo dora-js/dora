@@ -14,3 +14,4 @@ require('../lib')({
   plugins: program.plugins ? program.plugins.split(',') : [],
   verbose: program.verbose,
 });
+require('atool-monitor').emit();
