@@ -25,7 +25,7 @@
   "dependencies": {
     "async": "^1.5.0",
     "atool-monitor": "0.x",
-    "babel-polyfill": "^6.7.4",
+    "babel-polyfill": "^6.8.0",
     "co": "^4.6.0",
     "commander": "~2.9.0",
     "is-generator-fn": "^1.0.0",
@@ -33,7 +33,7 @@
     "koa": "~1.2.0",
     "koa-serve-index": "~1.1.1",
     "koa-static": "^2.0.0",
-    "loader-utils": "~0.2.11",
+    "loader-utils": "^0.2.14",
     "resolve": "~1.1.6",
     "spm-log": "^0.1.3"
   },
