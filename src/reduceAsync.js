@@ -13,7 +13,7 @@ export default function reduceAsync(arr, memo, iterator, callback) {
   }
 
   function run(item) {
-    iterator(_memo, item, function iteratorCallback(err, result) {
+    iterator(_memo, item, (err, result) => {
       _memo = result;
       next();
     });

@@ -9,25 +9,31 @@ const defaultCwd = process.cwd();
 const defaultArgs = {
   port: '8000',
   cwd: defaultCwd,
+  enabledMiddlewareServeIndex: true,
+  enabledMiddlewareStatic: true,
   resolveDir: [defaultCwd],
 };
 const data = {};
 
 export default function createServer(_args, callback) {
-  const args = {...defaultArgs, ..._args};
+  const args = { ...defaultArgs, ..._args };
   log.config(args);
 
   const { port, cwd, resolveDir } = args;
-  let pluginNames = args.plugins;
+  const pluginNames = args.plugins;
   const context = { port, cwd };
-  context.set = (key, val) => data[key] = val;
+  context.set = (key, val) => {
+    data[key] = val;
+  };
   context.get = key => data[key];
   context.set('__server_listen_log', true);
 
-  pluginNames = pluginNames.concat([
-    join(__dirname, './plugins/static'),
-    join(__dirname, './plugins/serve-index'),
-  ]);
+  if (args.enabledMiddlewareStatic) {
+    pluginNames.push(join(__dirname, './plugins/static'));
+  }
+  if (args.enabledMiddlewareServeIndex) {
+    pluginNames.push(join(__dirname, './plugins/serve-index'));
+  }
 
   const plugins = resolvePlugins(pluginNames, resolveDir, cwd);
   function _applyPlugins(name, pluginArgs, _callback) {
