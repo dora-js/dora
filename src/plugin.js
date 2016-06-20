@@ -61,37 +61,39 @@ export function resolvePlugins(pluginNames, resolveDir, cwd) {
 
 export function applyPlugins(plugins, name, context, pluginArgs, _callback = function noop() {}) {
   let ret;
+  const contextModify = context;
 
   reduceAsync(plugins, pluginArgs, (memo, plugin, callback) => {
     const func = plugin[name];
     if (!func) return callback(null, memo);
 
     const log = ['debug', 'info', 'warn', 'error'].reduce((_memo, key) => {
-      _memo[key] = (msg) => {
+      const m = _memo;
+      m[key] = (msg) => {
         spmLog[key](plugin.name, msg);
       };
-      return _memo;
+      return m;
     }, {});
     // Add more context api
-    context.plugins = plugins;
-    context.query = plugin.query;
-    context.log = log;
-    context.callback = callback;
-    context.restart = () => {
+    contextModify.plugins = plugins;
+    contextModify.query = plugin.query;
+    contextModify.log = log;
+    contextModify.callback = callback;
+    contextModify.restart = () => {
       console.log();
-      spmLog.info('dora', `try to restart...`);
+      spmLog.info('dora', 'try to restart...');
       process.send('restart');
     };
 
     if (name === 'middleware') {
-      context.app.use(func.call(context));
+      contextModify.app.use(func.call(contextModify));
       callback();
     } else if (isGeneratorFn(func)) {
-      co.wrap(func).call(context).then((val) => {
+      co.wrap(func).call(contextModify).then((val) => {
         callback(null, val);
       }, callback);
     } else {
-      const funcResult = func.call(context, memo);
+      const funcResult = func.call(contextModify, memo);
       if (funcResult && funcResult.then) {
         funcResult.then(result => {
           callback(null, result);
