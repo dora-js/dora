@@ -47,6 +47,14 @@ describe('plugin', () => {
 
     // Error: unsupported pluginName Type
     expect(() => resolvePlugin(null, null, null)).toThrow(/pluginName must be string or object/);
+
+    // Config from dora.config.js
+    plugin = resolvePlugin(['foo', { b: 1, c: true }], [cwd, join(cwd, 'node_modules/c')], cwd);
+    expect(plugin).toEqual({
+      name: 'd',
+      originQuery: undefined,
+      query: { b: 1, c: true },
+    });
   });
 
   it('resolvePlugins', () => {
