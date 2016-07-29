@@ -43,8 +43,16 @@ export function resolvePlugin(_pluginName, resolveDir, cwd = process.cwd()) {
     }
   } else if (isPlainObject(_pluginName)) {
     plugin = _pluginName;
+  } else if (Array.isArray(_pluginName)) {
+    name = _pluginName[0];
+    query = _pluginName[1];
+    const pluginPath = resolve(name, resolveDir);
+    if (!pluginPath) {
+      throw new Error(`[Error] ${name} not found in ${resolveDir}`);
+    }
+    plugin = require(pluginPath);
   } else {
-    throw Error('[Error] pluginName must be string or object');
+    throw Error('[Error] pluginName must be string or object or [string, object]');
   }
 
   return {

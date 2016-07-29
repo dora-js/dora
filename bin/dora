@@ -1,6 +1,17 @@
 #!/usr/bin/env node
 
 var cp = require('child_process');
+var fs = require('fs');
+var path = require('path');
+
+function existSync(filename) {
+  try {
+    fs.statSync(filename);
+    return true;
+  } catch(_) {
+    return false;
+  }
+}
 
 function start() {
   const p = cp.fork(__dirname + '/dora', process.argv.slice(2));
@@ -26,12 +37,17 @@ else {
     .option('-p, --port <n>', 'server port. Default: 8000')
     .option('--plugins <name|file>', 'defines the plugins which should be used.')
     .option('--verbose', 'run with more logging messages.')
+    .option('-c, --config <config>', 'file to configure dora')
     .parse(process.argv);
 
+  var doraConfigFile = program.config && program.config.charAt(0) === '/' ?
+        program.config : path.join(process.cwd(), program.config || 'dora.config.js');
+  var doraConfig = existSync(doraConfigFile) ? require(doraConfigFile) : {};
+
   require('../lib')({
-    port: program.port || '8000',
-    plugins: program.plugins ? program.plugins.split(',') : [],
-    verbose: program.verbose,
+    port: program.port || doraConfig.port || '8000',
+    plugins: program.plugins ? program.plugins.split(',') : (doraConfig.plugins || []),
+    verbose: program.verbose !== undefined ? program.verbose : doraConfig.verbose,
   });
   require('atool-monitor').emit();
 }
