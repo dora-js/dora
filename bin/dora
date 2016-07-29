@@ -5,9 +5,8 @@ var fs = require('fs');
 var path = require('path');
 
 function existSync(filename) {
-  try {
-    fs.statSync(filename);
-    return true;
+  try {  
+    return fs.statSync(filename).isFile();
   } catch(_) {
     return false;
   }
