@@ -2,6 +2,10 @@ HISTORY
 
 ----
 
+## 0.4.1
+
+- support dora.config.js, Ref: #66
+
 ## 0.4.0
 
 - use babel-runtime and transform-runtime instead of babel polyfill
