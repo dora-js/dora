@@ -1,4 +1,3 @@
-
 export default function reduceAsync(arr, memo, iterator, callback) {
   let _memo = memo;
   let index = 0;
@@ -14,6 +13,9 @@ export default function reduceAsync(arr, memo, iterator, callback) {
 
   function run(item) {
     iterator(_memo, item, (err, result) => {
+      if (err) {
+        throw new Error(err);
+      }
       _memo = result;
       next();
     });
