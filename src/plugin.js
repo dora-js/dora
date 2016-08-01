@@ -103,9 +103,14 @@ export function applyPlugins(plugins, name, context, pluginArgs, _callback = fun
     } else {
       const funcResult = func.call(contextModify, memo);
       if (funcResult && funcResult.then) {
-        funcResult.then(result => {
+        funcResult
+        .then(result => {
           callback(null, result);
-        }).catch(callback);
+        })
+        .catch(callback)
+        .catch(err => {
+          throw new Error(err);
+        });
       } else {
         callback(null, funcResult);
       }
