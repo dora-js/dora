@@ -2,6 +2,10 @@ HISTORY
 
 ----
 
+## 0.4.2
+
+- enhance error catch, Ref: #76
+
 ## 0.4.1
 
 - support dora.config.js, Ref: #66
