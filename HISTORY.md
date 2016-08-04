@@ -2,6 +2,10 @@ HISTORY
 
 ----
 
+## 0.4.3
+
+- babel-runtime as deps
+
 ## 0.4.2
 
 - enhance error catch, Ref: #76
