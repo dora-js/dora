@@ -20,8 +20,8 @@ $ npm i dora -g
 ## Usage
 
 ```bash
-## Load proxy, atool-build and hmr plugins
-$ dora --plugins proxy,atool-build,hmr
+## Load proxy, webpack and hmr plugins
+$ dora --plugins proxy,webpack,hmr
 
 ## Load local plugin
 $ dora --plugins ./local-plugin
