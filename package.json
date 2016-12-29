@@ -29,6 +29,7 @@
     "babel-runtime": "^6.9.2",
     "co": "^4.6.0",
     "commander": "~2.9.0",
+    "detect-port": "^1.0.5",
     "is-generator-fn": "^1.0.0",
     "is-plain-object": "~2.0.1",
     "koa": "~1.2.0",

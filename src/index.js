@@ -4,6 +4,7 @@ import { resolvePlugins, applyPlugins } from './plugin';
 import log from 'spm-log';
 import async from 'async';
 import { join } from 'path';
+import detect from 'detect-port';
 
 const defaultCwd = process.cwd();
 const defaultArgs = {
@@ -19,7 +20,8 @@ export default function createServer(_args, callback) {
   const args = { ...defaultArgs, ..._args };
   log.config(args);
 
-  const { port, cwd, resolveDir } = args;
+  const { cwd, resolveDir } = args;
+  let { port } = args;
   const pluginNames = args.plugins;
   const context = { port, cwd };
   context.set = (key, val) => {
@@ -56,12 +58,21 @@ export default function createServer(_args, callback) {
     next => { server = context.server = http.createServer(app.callback()); next(); },
     next => _applyPlugins('server.before', null, next),
     next => {
-      server.listen(port, () => {
-        if (context.get('__server_listen_log')) {
-          log.info('dora', `listened on ${port}`);
+      detect(port, (err, _port) => {
+        if (err) {
+          console.log(err);
         }
-        context.set('__ready', true);
-        next();
+        if (port !== _port) {
+          port = _port;
+          console.log(`port: ${port} was occupied, dora auto change to port: ${_port}`);
+        }
+        server.listen(port, () => {
+          if (context.get('__server_listen_log')) {
+            log.info('dora', `listened on ${port}`);
+          }
+          context.set('__ready', true);
+          next();
+        });
       });
     },
     next => _applyPlugins('server.after', null, next),
