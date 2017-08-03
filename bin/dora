@@ -45,7 +45,7 @@ else {
 
   require('../lib')({
     port: program.port || doraConfig.port || '8000',
-    plugins: program.plugins ? program.plugins.split(',') : (doraConfig.plugins || []),
+    plugins: program.plugins ? program.plugins.split(/,(?=\w)/) : (doraConfig.plugins || []),
     verbose: program.verbose !== undefined ? program.verbose : doraConfig.verbose,
   });
   require('atool-monitor').emit();
