@@ -2,6 +2,10 @@ HISTORY
 
 ----
 
+## 0.4.4
+
+- fix json paramters
+
 ## 0.4.3
 
 - babel-runtime as deps
