@@ -5,7 +5,7 @@ var fs = require('fs');
 var path = require('path');
 
 function existSync(filename) {
-  try {  
+  try {
     return fs.statSync(filename).isFile();
   } catch(_) {
     return false;
@@ -45,7 +45,7 @@ else {
 
   require('../lib')({
     port: program.port || doraConfig.port || '8000',
-    plugins: program.plugins ? program.plugins.split(/,(?=\w)/) : (doraConfig.plugins || []),
+    plugins: program.plugins ? program.plugins.split(/,(?=\w|\.|\/)/) : (doraConfig.plugins || []),
     verbose: program.verbose !== undefined ? program.verbose : doraConfig.verbose,
   });
   require('atool-monitor').emit();
