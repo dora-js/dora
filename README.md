@@ -27,10 +27,10 @@ $ dora --plugins proxy,webpack,hmr
 $ dora --plugins ./local-plugin
 
 ## Load plugin with arguments
-$ dora --plugins atool-build?publicPath=/foo/&verbose
+$ dora --plugins foo?optionA=/foo/&optionB
 
 ## Load plugin with JSON arguments
-$ dora --plugins 'atool-build?{"publicPath":"/foo/","verbose":true}'
+$ dora --plugins 'foo?{"optionA":"/foo/","optionB":true}'
 ```
 
 ## Docs
