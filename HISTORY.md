@@ -2,6 +2,10 @@ HISTORY
 
 ----
 
+## 0.5.0
+
+- support private module for plugin
+
 ## 0.4.4
 
 - fix json paramters
