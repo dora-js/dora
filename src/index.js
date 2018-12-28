@@ -4,6 +4,7 @@ import { resolvePlugins, applyPlugins } from './plugin';
 import log from 'spm-log';
 import async from 'async';
 import { join } from 'path';
+import notify from 'umi-notify';
 
 const defaultCwd = process.cwd();
 const defaultArgs = {
@@ -16,6 +17,8 @@ const defaultArgs = {
 const data = {};
 
 export default function createServer(_args, callback) {
+  notify.onDevStart({ name: 'dora', version: '0.6' });
+
   const args = { ...defaultArgs, ..._args };
   log.config(args);
 

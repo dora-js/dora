@@ -4,3 +4,5 @@ tmp
 node_modules/*
 coverage
 lib
+yarn.lock
+
